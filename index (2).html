@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>Quà 20/10 💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Quicksand:wght@500;600&display=swap" rel="stylesheet">
+
+<!-- ================= STYLE ================= -->
+<style>
+:root{
+  --pink:#ff4f81; --pink-soft:#ff6f9c; --pink-border:#ffd3e2; --glow:rgba(255,90,150,.28);
+  --script:"Dancing Script","Segoe Script","Brush Script MT",cursive;
+  --sans:"Quicksand",system-ui,sans-serif; --flower:#ff9db8;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#fff;overflow:hidden;-webkit-tap-highlight-color:transparent;touch-action:manipulation;overscroll-behavior:none}
+.screen{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;text-align:center;
+  opacity:0;visibility:hidden;transition:opacity 1s,visibility 1s;
+  padding:env(safe-area-inset-top,0) 18px env(safe-area-inset-bottom,0)}
+.screen.active{opacity:1;visibility:visible}
+
+/* ---- Màn 1 ---- */
+#s1{background:#fff;padding-top:17svh}
+.title1{margin:0 0 clamp(26px,7svh,46px);font:700 clamp(32px,11.6vw,46px)/1.3 var(--script);color:var(--pink);text-shadow:0 0 14px rgba(255,79,129,.18)}
+.frame{width:min(78vw,300px);aspect-ratio:1;padding:0;display:grid;place-items:center;overflow:hidden;background:#fff;
+  border:2px solid var(--pink-border);border-radius:25px;box-shadow:0 0 28px 6px var(--glow);cursor:pointer}
+.frame svg,.frame img{width:100%;height:100%;object-fit:contain;display:block}
+.hint1{margin:clamp(24px,6.5svh,42px) 0 0;font:500 clamp(17px,5.8vw,22px) var(--script);color:var(--pink-soft)}
+
+/* ---- Màn 2 ---- */
+#s2{background:radial-gradient(ellipse at 50% 120%,#1a0a14,#050205 70%);overflow:hidden}
+#sparkle{position:absolute;inset:0;width:100%;height:100%}
+.glow{position:absolute;top:-90px;left:50%;width:150%;height:230px;transform:translateX(-50%);
+  background:radial-gradient(ellipse at center,rgba(255,70,160,.6),transparent 68%);pointer-events:none}
+.title2,.sub,.hint2{position:relative;z-index:2}
+.title2{margin:clamp(28px,6svh,48px) 0 8px;font:700 clamp(28px,9vw,38px)/1.2 var(--script);color:#ff7fb0;
+  text-shadow:0 0 8px #ff3d8f,0 0 22px rgba(255,61,143,.7);opacity:0;transition:opacity 1.6s}
+.sub{margin:0;min-height:1.6em;font:600 clamp(13px,3.9vw,16px) var(--sans);color:#ffeaf2;opacity:0;transition:opacity 2s}
+.title2.in,.sub.in{opacity:1}
+.sub.fast{transition-duration:.6s}
+.bouquet{position:absolute;left:50%;bottom:11svh;width:min(88vw,350px);transform:translateX(-50%);z-index:2;overflow:visible}
+.hint2{position:absolute;bottom:calc(5svh + env(safe-area-inset-bottom,0));left:0;right:0;font:500 clamp(19px,5.8vw,24px) var(--script);
+  color:#ff8fba;text-shadow:0 0 8px #ff3d8f;opacity:0;transition:opacity 1s;pointer-events:none}
+.hint2.in{opacity:1}
+.hint2 .hand{display:block;font-size:30px;margin-top:4px;animation:tap 1s ease-in-out infinite}
+@keyframes tap{0%,100%{transform:translateY(0) scale(1);opacity:1}50%{transform:translateY(-8px) scale(.9);opacity:.5}}
+
+/* tulip */
+.paper{opacity:0;transform-box:fill-box;transform-origin:50% 100%;animation:paper .9s .2s ease-out forwards}
+@keyframes paper{from{opacity:0;transform:translateY(40px) scale(.85)}to{opacity:1;transform:none}}
+.stem{fill:none;stroke:#2f9457;stroke-width:4;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;animation:grow 1.1s ease-out forwards}
+@keyframes grow{to{stroke-dashoffset:0}}
+.head{fill:var(--flower);stroke:rgba(255,255,255,.85);stroke-width:1.6;stroke-linejoin:round;
+  filter:drop-shadow(0 0 5px var(--flower));transform-box:fill-box;transform-origin:50% 100%;transform:scale(0);animation:bloom 1.2s ease-out forwards}
+@keyframes bloom{0%{transform:scale(0)}45%{transform:scale(.4,.75)}100%{transform:scale(1)}}
+.leaf{fill:#2f9457;opacity:0;animation:fade .8s forwards}
+@keyframes fade{to{opacity:1}}
+
+/* sticker rơi */
+.fall{position:absolute;top:-40px;z-index:1;pointer-events:none;opacity:0;animation:fall var(--dur) linear forwards;filter:drop-shadow(0 0 6px rgba(255,100,170,.6))}
+@keyframes fall{0%{opacity:0;transform:translate(0,0) rotate(0)}10%{opacity:.95}
+  50%{transform:translate(var(--sway),55svh) rotate(160deg)}90%{opacity:.9}100%{opacity:0;transform:translate(calc(var(--sway)*-1),108svh) rotate(320deg)}}
+
+/* ---- Thiệp thông điệp ---- */
+#letter{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:20px;background:rgba(10,2,8,.55);backdrop-filter:blur(3px);opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s}
+#letter.open{opacity:1;visibility:visible}
+.card{position:relative;width:min(100%,340px);height:min(82svh,520px);display:flex;flex-direction:column;align-items:center;padding:30px 22px 26px;background:#ffd9e6;border-radius:26px;box-shadow:0 0 40px rgba(255,90,150,.5);transform:scale(.6);opacity:0;transition:transform .5s cubic-bezier(.2,1.2,.3,1),opacity .4s}
+#letter.open .card{transform:scale(1);opacity:1}
+.card::before{content:"";position:absolute;inset:10px;border:2px dashed #f48fb1;border-radius:20px;pointer-events:none}
+.corner{position:absolute;color:#f06292;font-size:14px;line-height:1}
+.c1{top:5px;left:16px}.c2{top:42%;right:5px}.c3{bottom:6px;right:34px}.c4{bottom:22%;left:5px}
+.btn-close{position:absolute;top:-14px;right:-10px;z-index:3;width:46px;height:46px;border:0;border-radius:50%;background:#d6407f;color:#fff;font:700 22px/1 var(--sans);box-shadow:0 3px 10px rgba(214,64,127,.5);cursor:pointer}
+.avatar{flex:none;width:118px;height:150px;border-radius:16px;display:grid;place-items:center;font-size:40px;background:#fff center/cover no-repeat;box-shadow:0 3px 10px rgba(0,0,0,.2)}
+.ltitle{flex:none;margin:16px 0 10px;font:700 22px/1.3 var(--sans);color:#d6407f}
+.body{flex:1;min-height:0;width:100%;overflow-y:auto;padding:0 12px 4px;text-align:center;font:italic 500 16px/1.75 var(--sans);color:#b0527a;scrollbar-width:thin;scrollbar-color:#b0527a rgba(255,255,255,.6)}
+.body::-webkit-scrollbar{width:8px}
+.body::-webkit-scrollbar-track{background:rgba(255,255,255,.55);border-radius:8px}
+.body::-webkit-scrollbar-thumb{background:#b0527a;border-radius:8px}
+#ltext{margin:0;white-space:pre-wrap}
+#ltext.typing::after{content:"▍";color:#d6407f;animation:blink .8s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* ---- Bong bóng ảnh ---- */
+#bubbles{position:absolute;inset:0;z-index:4;pointer-events:none;overflow:hidden}
+.bub{position:absolute;bottom:-100px;width:clamp(72px,21vw,112px);aspect-ratio:4/5;opacity:0;will-change:transform,opacity}
+.bub.go{animation:rise 5s linear var(--d) both}
+.bub>div{width:100%;height:100%;border-radius:18px;border:2px solid rgba(255,190,215,.9);background:#fff3f8 center/cover no-repeat;display:grid;place-items:center;font-size:34px;box-shadow:0 0 14px 3px rgba(255,120,175,.65),0 0 30px rgba(255,90,150,.35)}
+.bub.go>div{animation:sway 2.5s ease-in-out var(--d) infinite alternate}
+@keyframes rise{0%{transform:translateY(0);opacity:0}8%{opacity:1}82%{opacity:1}100%{transform:translateY(calc(-100svh - 260px));opacity:0}}
+@keyframes sway{from{transform:translateX(-14px) rotate(-3deg)}to{transform:translateX(14px) rotate(3deg)}}
+
+/* ---- Chế độ chỉnh sửa ---- */
+#editBtn{position:fixed;right:12px;bottom:12px;z-index:100;width:46px;height:46px;border-radius:50%;border:0;background:#222;color:#fff;font-size:20px;box-shadow:0 2px 10px rgba(0,0,0,.4)}
+#panel{position:fixed;left:0;right:0;bottom:0;z-index:99;max-height:72svh;overflow:auto;background:#fff;color:#222;font:14px var(--sans);
+  padding:14px 14px 70px;border-radius:18px 18px 0 0;box-shadow:0 -6px 24px rgba(0,0,0,.3);transform:translateY(105%);transition:transform .3s}
+#panel.open{transform:none}
+#panel label{display:block;margin:10px 0 4px;font-weight:600}
+#panel input[type=text],#panel textarea{width:100%;padding:8px;border:1px solid #ccc;border-radius:8px;font:inherit}
+#panel textarea{min-height:56px}
+#panel button{margin:6px 6px 0 0;padding:9px 12px;border:0;border-radius:8px;background:#ff4f81;color:#fff;font:600 13px var(--sans)}
+#panel button.alt{background:#555}
+#panel small{color:#777}
+</style>
+</head>
+
+<!-- ================= STRUCTURE ================= -->
+<body>
+<main class="screen active" id="s1">
+  <h1 class="title1" data-key="s1Title"></h1>
+  <button class="frame" id="frame" type="button" aria-label="Mở quà">
+    <svg id="defaultArt" viewBox="0 0 270 270" aria-hidden="true">
+      <g fill="none" stroke="#111" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M108 170 C107 186 108 198 106 212"/><path d="M106 212 L100 224"/>
+        <path fill="#fff" d="M66 152 C62 112 86 94 110 96 C138 98 152 122 148 150 C147 162 140 170 130 170 L84 170 C73 170 67 162 66 152Z"/>
+        <path d="M146 148 C158 148 164 154 172 156"/><path d="M172 156 C176 152 180 156 176 160"/>
+      </g>
+      <circle cx="96" cy="140" r="2.8" fill="#111"/><circle cx="122" cy="140" r="2.8" fill="#111"/>
+      <ellipse cx="88" cy="149" rx="6" ry="4" fill="#ffb3c6" opacity=".85"/><ellipse cx="130" cy="149" rx="6" ry="4" fill="#ffb3c6" opacity=".85"/>
+      <path d="M105 148Q109 152 113 148" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"/>
+      <g transform="translate(0,-2)">
+        <g stroke="#6aa84f" stroke-width="3" stroke-linecap="round"><path d="M170 122L172 104"/><path d="M184 120L186 100"/><path d="M196 122L200 108"/></g>
+        <g fill="#f2578f" stroke="#d93a75" stroke-width="1.2" stroke-linejoin="round">
+          <path transform="translate(171,104) rotate(-8)" d="M0 0C-10-2-11-20-6-26L-2-18 0-27 3-18 7-26C12-20 10-2 0 0Z"/>
+          <path transform="translate(186,100) rotate(4)" fill="#ff7aa8" d="M0 0C-10-2-11-20-6-26L-2-18 0-27 3-18 7-26C12-20 10-2 0 0Z"/>
+          <path transform="translate(201,108) rotate(14)" d="M0 0C-10-2-11-20-6-26L-2-18 0-27 3-18 7-26C12-20 10-2 0 0Z"/>
+        </g>
+        <path d="M160 120L208 116 192 186 176 190Z" fill="#dcbb92" stroke="#b78e62" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M160 120L184 138 208 116" fill="#e8cca6" stroke="#b78e62" stroke-width="1.4" stroke-linejoin="round"/>
+        <path d="M178 160L192 158" stroke="#a97a4c" stroke-width="2.4" stroke-linecap="round"/>
+      </g>
+    </svg>
+  </button>
+  <p class="hint1" data-key="s1Hint"></p>
+</main>
+
+<section class="screen" id="s2">
+  <canvas id="sparkle"></canvas><div class="glow"></div><div id="bubbles"></div>
+  <h2 class="title2" data-key="s2Title"></h2>
+  <p class="sub" id="sub"></p>
+  <svg class="bouquet" id="bouquet" viewBox="0 0 300 360" aria-hidden="true"></svg>
+  <p class="hint2" id="hint2"><span data-key="s2Hint"></span><span class="hand">👆</span></p>
+</section>
+
+<div id="letter" aria-hidden="true">
+  <div class="card" role="dialog" aria-modal="true">
+    <span class="corner c1">♥</span><span class="corner c2">♥</span><span class="corner c3">♥</span><span class="corner c4">♥</span>
+    <button class="btn-close" id="btnClose" type="button" aria-label="Đóng">✕</button>
+    <div class="avatar" id="avatar"></div>
+    <h3 class="ltitle" data-key="letterTitle"></h3>
+    <div class="body" id="lbody"><p id="ltext"></p></div>
+  </div>
+</div>
+
+<!-- ================= LOGIC ================= -->
+<script>
+"use strict";
+/* ---------- Cấu hình mặc định (bị ghi đè bởi config.json) ---------- */
+const DEFAULTS = {
+  s1Title: "Cốc cốc, có quà\ncho em đây 💖",
+  s1Hint:  "Chạm vào ảnh, có điều bất ngờ",
+  s2Title: "Gửi người anh yêu 💖",
+  s2SubA:  "💌 Gửi em — tình yêu của anh",
+  s2SubB:  "Yêu em — hôm nay, ngày mai và mãi mãi 💖✨",
+  s2Hint:  "Chạm vào hoa để nhận lời yêu",
+  letterTitle: "Gửi Người Anh Yêu 💖",
+  letterText:  "💘 Em à, mỗi ngày bên em đều là một ngày đặc biệt của anh. Cảm ơn em vì đã yêu anh, vì đã luôn ở đây cùng anh đi qua bao buồn vui. Anh hứa sẽ yêu thương, trân trọng và che chở em suốt cuộc đời này. Mãi yêu em 💞",
+  letterPhoto: "",
+  audioSrc: "",                      // tên file nhạc đặt cạnh trang, ví dụ "music.mp3"
+  bubbles: ["", "", "", ""],           // 4 ảnh bong bóng, từ trái sang phải
+  flower:  "#ff9db8",
+  stickers:"🌸💖🌷🌺",
+  frameImage: ""
+};
+const EDIT = /[?&]edit\b|#edit/.test(location.href);
+const DRAFT_KEY = "lovegift-draft";
+let cfg = { ...DEFAULTS };
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => document.querySelectorAll(s);
+
+/* ---------- Hiển thị cấu hình ---------- */
+function setText(el, text) {                       // xuống dòng an toàn, không dùng innerHTML
+  el.replaceChildren();
+  String(text).split("\n").forEach((line, i) => { if (i) el.append(document.createElement("br")); el.append(line); });
+}
+function render() {
+  $$("[data-key]").forEach((el) => setText(el, cfg[el.dataset.key]));
+  document.documentElement.style.setProperty("--flower", cfg.flower);
+  const frame = $("#frame"), art = $("#defaultArt");
+  frame.querySelector("img")?.remove();
+  art.style.display = cfg.frameImage ? "none" : "";
+  if (cfg.frameImage) { const im = new Image(); im.src = cfg.frameImage; im.alt = ""; frame.append(im); }
+  const av = $("#avatar"), hasPhoto = /^data:image\//.test(cfg.letterPhoto);
+  av.style.backgroundImage = hasPhoto ? `url("${cfg.letterPhoto}")` : "";
+  av.textContent = hasPhoto ? "" : "💖";
+  $$(".bub>div").forEach((d, i) => {
+    const b = (cfg.bubbles || [])[i] || "", ok = /^data:image\//.test(b);
+    d.style.backgroundImage = ok ? `url("${b}")` : "";
+    d.textContent = ok ? "" : ["🌸", "💖", "🌷", "💞"][i];
+  });
+  setAudio();
+}
+
+/* ---------- Chuyển màn ---------- */
+let current = 1;
+function go(n) {
+  current = n; closeLetter(true); stopBubbles();
+  $$(".screen").forEach((s) => s.classList.toggle("active", s.id === "s" + n));
+  clearTimers();
+  if (n === 2) playBouquet(); else stopFx();
+}
+
+/* ---------- Bó hoa nở ---------- */
+const TULIPS = [[150,64,0,0],[128,104,-8,1],[172,104,8,1],[96,112,-18,2],[204,112,18,2],[70,140,-28,3],[230,140,28,3]];
+const HEAD = "M0 0C-14-2-16-26-9-36L-4-26 0-40 4-26 9-36C16-26 14-2 0 0Z";
+const timers = []; let ready = false;
+const later = (fn, ms) => timers.push(setTimeout(fn, ms));
+function clearTimers() { timers.splice(0).forEach(clearTimeout); }
+
+function playBouquet() {
+  ready = false;
+  const t = $(".title2"), sub = $("#sub"), hint = $("#hint2");
+  [t, sub, hint].forEach((e) => e.classList.remove("in"));
+  sub.classList.remove("fast");
+
+  let stems = "", heads = "";
+  TULIPS.forEach(([x, y, r, o]) => {
+    const d = (1.3 + o * 0.55).toFixed(2);
+    stems += `<path class="stem" pathLength="1" style="animation-delay:${d}s" d="M150 285Q${(150 + x) / 2} ${(285 + y) / 2 + 24} ${x} ${y}"/>`;
+    heads += `<g transform="translate(${x},${y}) rotate(${r})"><path class="head" style="animation-delay:${(+d + 0.9).toFixed(2)}s" d="${HEAD}"/></g>`;
+  });
+  $("#bouquet").innerHTML =
+    `<path class="leaf" style="animation-delay:1.8s" d="M150 250C120 230 100 235 92 215 118 214 142 226 150 250Z"/>
+     <path class="leaf" style="animation-delay:2.1s" d="M150 250C180 230 200 235 208 215 182 214 158 226 150 250Z"/>${stems}${heads}
+     <g class="paper">
+       <path d="M88 215L212 212 164 338 136 338Z" fill="#fff" stroke="#fff" stroke-width="9" stroke-linejoin="round"/>
+       <path d="M88 215L212 212 164 338 136 338Z" fill="#f9c9c2" stroke="#f0a9a4" stroke-width="1.5" stroke-linejoin="round"/>
+       <path d="M88 215L150 250 212 212" fill="#fbd9d2" stroke="#f0a9a4" stroke-width="1.3" stroke-linejoin="round"/>
+       <path d="M150 282C132 270 120 282 130 294 140 300 148 292 150 288 152 292 160 300 170 294 180 282 168 270 150 282Z" fill="#a9c98a" stroke="#6f9a55" stroke-width="1.5"/>
+     </g>`;
+
+  later(() => t.classList.add("in"), 200);
+  later(() => { setText(sub, cfg.s2SubA); sub.classList.add("in"); }, 300);          // mờ dần rõ lên trong 2s
+  later(() => { sub.classList.add("fast"); sub.classList.remove("in"); }, 4400);
+  later(() => { setText(sub, cfg.s2SubB); sub.classList.remove("fast"); sub.classList.add("in"); }, 5100);
+  const end = (1.3 + 3 * 0.55 + 0.9 + 1.2) * 1000 + 300;                              // bông cuối nở xong
+  later(() => { hint.classList.add("in"); ready = true; }, end);
+  startFx();
+}
+
+/* ---------- Hạt lấp lánh + sticker rơi ---------- */
+const cv = $("#sparkle"), ctx = cv.getContext("2d");
+let dots = [], raf = 0, fallTimer = 0;
+function sizeCanvas() { const r = devicePixelRatio || 1; cv.width = innerWidth * r; cv.height = innerHeight * r; ctx.setTransform(r, 0, 0, r, 0, 0); }
+function startFx() {
+  stopFx(); sizeCanvas();
+  dots = Array.from({ length: 70 }, () => ({ x: Math.random() * innerWidth, y: Math.random() * innerHeight,
+    r: Math.random() * 1.8 + .4, vy: -(Math.random() * .15 + .03), vx: (Math.random() - .5) * .12, p: Math.random() * 6.28, s: Math.random() * .03 + .01 }));
+  const tick = () => {
+    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    for (const d of dots) {
+      d.x += d.vx; d.y += d.vy; d.p += d.s;
+      if (d.y < -4) d.y = innerHeight + 4; if (d.x < -4) d.x = innerWidth + 4; if (d.x > innerWidth + 4) d.x = -4;
+      ctx.globalAlpha = .3 + .7 * Math.abs(Math.sin(d.p));
+      ctx.fillStyle = "#fff"; ctx.shadowColor = "#ff9fd0"; ctx.shadowBlur = 6;
+      ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, 6.283); ctx.fill();
+    }
+    raf = requestAnimationFrame(tick);
+  };
+  tick();
+  fallTimer = setInterval(spawnSticker, 1100);
+}
+function stopFx() { cancelAnimationFrame(raf); clearInterval(fallTimer); $$(".fall").forEach((e) => e.remove()); }
+function spawnSticker() {
+  const seg = window.Intl?.Segmenter ? [...new Intl.Segmenter().segment(cfg.stickers)].map((s) => s.segment) : Array.from(cfg.stickers);
+  if (!seg.length || $$(".fall").length > 14) return;
+  const s = document.createElement("span");
+  s.className = "fall"; s.textContent = seg[Math.floor(Math.random() * seg.length)];
+  s.style.cssText = `left:${Math.random() * 92}%;font-size:${16 + Math.random() * 16}px;--dur:${7 + Math.random() * 5}s;--sway:${(Math.random() - .5) * 90}px`;
+  s.addEventListener("animationend", () => s.remove());
+  $("#s2").append(s);
+}
+
+/* ---------- Tương tác ---------- */
+$("#frame").addEventListener("click", () => { startAudio(); go(2); });   // lần chạm đầu tiên mở được nhạc trên điện thoại
+$("#s2").addEventListener("click", () => { if (ready) openLetter(); });   // chạm hoa/màn hình sau khi hoa nở xong
+addEventListener("resize", () => current === 2 && sizeCanvas());
+
+/* ---------- Thiệp thông điệp ---------- */
+const letter = $("#letter"), ltext = $("#ltext"), lbody = $("#lbody"), lt = [];
+const graphemes = (s) => window.Intl?.Segmenter ? [...new Intl.Segmenter().segment(s)].map((x) => x.segment) : Array.from(s);
+
+function openLetter() {
+  closeLetter(true); stopBubbles();
+  ltext.textContent = ""; lbody.scrollTop = 0;
+  letter.classList.add("open"); letter.setAttribute("aria-hidden", "false");    // phóng to dần
+  lt.push(setTimeout(typeLetter, 2000));                                         // sau 2 giây mới gõ chữ
+}
+function typeLetter() {
+  const chars = graphemes(cfg.letterText); let i = 0, out = "";
+  ltext.classList.add("typing");
+  (function step() {
+    if (i >= chars.length) { ltext.classList.remove("typing"); return; }
+    const ch = chars[i++], stick = lbody.scrollHeight - lbody.scrollTop - lbody.clientHeight < 40;
+    out += ch; ltext.textContent = out;
+    if (stick) lbody.scrollTop = lbody.scrollHeight;                             // chỉ tự cuộn khi người xem đang ở cuối
+    lt.push(setTimeout(step, /[.,!?]/.test(ch) ? 260 : 40));
+  })();
+}
+function closeLetter(silent) {
+  lt.splice(0).forEach(clearTimeout);
+  ltext.classList.remove("typing");
+  const wasOpen = letter.classList.contains("open");
+  letter.classList.remove("open"); letter.setAttribute("aria-hidden", "true");
+  if (wasOpen && !silent) document.dispatchEvent(new CustomEvent("gift:letter-closed"));
+}
+$("#btnClose").addEventListener("click", () => closeLetter());
+document.addEventListener("gift:letter-closed", () => startBubbles(2000));   // chờ đúng 2 giây rồi bay
+
+/* ---------- Bong bóng ảnh ---------- */
+const bubEls = [], bt = [];
+const POS = [3, 27.5, 52, 76], STAGGER = 0.8, FLY = 5, PAUSE = 2;       // vị trí trái→phải, lệch 0,8s, bay 5s, nghỉ 2s
+POS.forEach((left) => {
+  const b = document.createElement("div"); b.className = "bub"; b.style.left = left + "%";
+  b.append(document.createElement("div")); $("#bubbles").append(b); bubEls.push(b);
+});
+function startBubbles(delay = 0) {
+  stopBubbles();
+  bt.push(setTimeout(function cycle() {
+    bubEls.forEach((b, i) => {
+      b.classList.remove("go"); void b.offsetWidth;                          // khởi động lại animation
+      b.style.setProperty("--d", (i * STAGGER) + "s"); b.classList.add("go");
+    });
+    bt.push(setTimeout(cycle, ((bubEls.length - 1) * STAGGER + FLY + PAUSE) * 1000));   // bay hết, nghỉ 2s, lặp lại
+  }, delay));
+}
+function stopBubbles() { bt.splice(0).forEach(clearTimeout); bubEls.forEach((b) => b.classList.remove("go")); }
+
+/* ---------- Nhạc nền ---------- */
+const audio = new Audio(); audio.loop = true; audio.preload = "auto";
+let audioWanted = false, audioPreview = "";
+function setAudio() {
+  const src = audioPreview || cfg.audioSrc || "";
+  if (!src) { audio.removeAttribute("src"); return; }
+  if (audio.getAttribute("src") !== src) { audio.src = src; if (audioWanted) audio.play().catch(() => {}); }
+}
+function startAudio() { audioWanted = true; if (audio.getAttribute("src")) audio.play().catch(() => {}); }
+document.addEventListener("visibilitychange", () => {                  // thoát app thì tạm dừng nhạc
+  if (document.hidden) audio.pause(); else if (audioWanted && audio.getAttribute("src")) audio.play().catch(() => {});
+});
+
+/* ---------- Khởi động ---------- */
+(async function init() {
+  try { const r = await fetch("config.json", { cache: "no-store" }); if (r.ok) Object.assign(cfg, await r.json()); } catch (e) {}
+  if (EDIT) { try { Object.assign(cfg, JSON.parse(localStorage.getItem(DRAFT_KEY) || "{}")); } catch (e) {} buildEditor(); }
+  render();
+})();
+
+/* ---------- Chế độ chỉnh sửa (chỉ có khi mở ?edit) ---------- */
+function buildEditor() {
+  const FIELDS = [
+    ["s1Title", "Màn 1: tiêu đề", "area"], ["s1Hint", "Màn 1: dòng hướng dẫn", "text"],
+    ["s2Title", "Màn 2: tiêu đề", "text"], ["s2SubA", "Màn 2: phụ đề lúc đầu", "text"], ["s2SubB", "Màn 2: phụ đề sau", "text"],
+    ["s2Hint", "Màn 2: dòng chạm vào hoa", "text"], ["letterTitle", "Thiệp: tiêu đề", "text"], ["letterText", "Thiệp: nội dung thư (Enter để xuống dòng)", "area"],
+    ["stickers", "Sticker rơi (gõ các emoji liền nhau)", "text"],
+    ["audioSrc", "Nhạc nền: tên file đặt cạnh trang (vd music.mp3)", "text"]
+  ];
+  const p = document.createElement("div"); p.id = "panel";
+  p.innerHTML = '<b>✏️ Chỉnh sửa</b> <small>(người quét QR không thấy phần này)</small>';
+  FIELDS.forEach(([k, label, type]) => {
+    const l = document.createElement("label"); l.textContent = label;
+    const i = document.createElement(type === "area" ? "textarea" : "input"); if (type === "text") i.type = "text";
+    i.value = cfg[k]; i.addEventListener("input", () => { cfg[k] = i.value; save(); render(); });
+    p.append(l, i);
+  });
+  const lc = document.createElement("label"); lc.textContent = "Màu hoa tulip";
+  const ci = document.createElement("input"); ci.type = "color"; ci.value = cfg.flower;
+  ci.addEventListener("input", () => { cfg.flower = ci.value; save(); render(); }); p.append(lc, ci);
+  const li = document.createElement("label"); li.textContent = "Ảnh trong khung màn 1";
+  const fi = document.createElement("input"); fi.type = "file"; fi.accept = "image/*";
+  fi.addEventListener("change", async () => { if (fi.files[0]) { cfg.frameImage = await shrink(fi.files[0]); save(); render(); } });
+  p.append(li, fi);
+  const l2 = document.createElement("label"); l2.textContent = "Ảnh trên thiệp (nên dùng ảnh đứng)";
+  const f2 = document.createElement("input"); f2.type = "file"; f2.accept = "image/*";
+  f2.addEventListener("change", async () => { if (f2.files[0]) { cfg.letterPhoto = await shrink(f2.files[0], 500); save(); render(); } });
+  p.append(l2, f2);
+  const l3 = document.createElement("label"); l3.textContent = "Nghe thử nhạc từ máy (chỉ để thử, nhớ đưa file nhạc lên hosting)";
+  const f3 = document.createElement("input"); f3.type = "file"; f3.accept = "audio/*";
+  f3.addEventListener("change", () => { if (f3.files[0]) { audioPreview = URL.createObjectURL(f3.files[0]); audioWanted = true; setAudio(); } });
+  p.append(l3, f3);
+  for (let i = 0; i < 4; i++) {
+    const lb = document.createElement("label"); lb.textContent = "Ảnh bong bóng " + (i + 1) + " (từ trái sang phải)";
+    const fb = document.createElement("input"); fb.type = "file"; fb.accept = "image/*";
+    fb.addEventListener("change", async () => {
+      if (!fb.files[0]) return;
+      cfg.bubbles = Array.from({ length: 4 }, (_, k) => (cfg.bubbles || [])[k] || "");
+      cfg.bubbles[i] = await shrink(fb.files[0], 360); save(); render();
+    });
+    p.append(lb, fb);
+  }
+
+  const btn = (txt, fn, alt) => { const b = document.createElement("button"); b.textContent = txt; b.type = "button"; if (alt) b.className = "alt"; b.onclick = fn; p.append(b); };
+  p.append(document.createElement("br"));
+  btn("Xem màn 1", () => go(1), 1); btn("Phát màn 2", () => go(2), 1); btn("Xem thiệp", () => { if (current !== 2) go(2); openLetter(); }, 1);
+  btn("Xem bong bóng", () => { if (current !== 2) go(2); startBubbles(0); }, 1);
+  btn("⬇ Tải config.json", downloadConfig);
+  btn("Bỏ ảnh màn 1", () => { cfg.frameImage = ""; save(); render(); }, 1);
+  btn("Bỏ ảnh thiệp", () => { cfg.letterPhoto = ""; save(); render(); }, 1);
+  btn("Xóa bản nháp", () => { localStorage.removeItem(DRAFT_KEY); location.reload(); }, 1);
+  const small = document.createElement("small"); small.style.display = "block"; small.style.marginTop = "10px";
+  small.textContent = "Sau khi tải config.json, đưa file lên hosting cùng thư mục với trang này.";
+  p.append(small);
+
+  const lq = document.createElement("label"); lq.textContent = "Link trang thật trên hosting (bắt đầu bằng https://, không có ?edit) để tạo mã QR";
+  const iq = document.createElement("input"); iq.type = "text"; iq.value = location.origin + location.pathname;
+  const qbox = document.createElement("div"); qbox.style.cssText = "margin-top:8px;text-align:center";
+  p.append(lq, iq); btn("Tạo mã QR", () => makeQR(iq.value.trim(), qbox)); p.append(qbox);
+
+  const tg = document.createElement("button"); tg.id = "editBtn"; tg.type = "button"; tg.textContent = "✏️";
+  tg.onclick = () => p.classList.toggle("open");
+  document.body.append(p, tg);
+}
+function makeQR(url, box) {
+  const draw = () => {
+    const q = qrcode(0, "M"); q.addData(url); q.make();
+    const img = new Image(); img.src = q.createDataURL(8, 4); img.alt = "Mã QR";
+    img.style.cssText = "width:220px;height:220px;image-rendering:pixelated";
+    const a = document.createElement("a"); a.href = img.src; a.download = "qr.gif"; a.textContent = "Tải mã QR"; a.style.cssText = "display:block;margin-top:6px";
+    box.replaceChildren(img, a);
+  };
+  if (window.qrcode) return draw();
+  const s = document.createElement("script");
+  s.src = "https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"; s.onload = draw;
+  s.onerror = () => { box.textContent = "Không tải được thư viện QR, hãy kiểm tra mạng."; };
+  document.head.append(s);
+}
+function save() { try { localStorage.setItem(DRAFT_KEY, JSON.stringify(cfg)); } catch (e) { alert("Ảnh quá nặng để lưu nháp, hãy chọn ảnh nhỏ hơn."); } }
+function downloadConfig() {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(cfg, null, 2)], { type: "application/json" }));
+  a.download = "config.json"; a.click(); URL.revokeObjectURL(a.href);
+}
+function shrink(file, max = 700) {                                  // thu nhỏ ảnh để config.json nhẹ
+  return new Promise((ok) => {
+    const im = new Image(), fr = new FileReader();
+    fr.onload = () => { im.src = fr.result; };
+    im.onload = () => {
+      const k = Math.min(1, max / Math.max(im.width, im.height)), c = document.createElement("canvas");
+      c.width = im.width * k; c.height = im.height * k; c.getContext("2d").drawImage(im, 0, 0, c.width, c.height);
+      ok(c.toDataURL(/png|webp|gif/.test(file.type) ? "image/png" : "image/jpeg", .85));
+    };
+    fr.readAsDataURL(file);
+  });
+}
+</script>
+</body>
+</html>
